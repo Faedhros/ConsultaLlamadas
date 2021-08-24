@@ -1,21 +1,19 @@
-﻿@model  List<ConsultaLlamadas.Models.ViewModels.TablaLineaLlamadas>
+﻿@model List<ConsultaLlamadas.Models.DetalleLlamadas>
 
- @{
-
-     Layout = null;
-     if (Session["personId"] == null)
-     {
-         Response.Redirect("~/Login/Index");
-     }
-
-
-     
+@{
+    if (Session["personId"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+    Layout = null;
 }
- 
+
 <!DOCTYPE html>
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detalles</title>
     <meta name="viewport" content="width=device-width" />
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -23,18 +21,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
     <style>
-        .paginador{
+        .paginador {
             margin-left: 50%;
-
         }
     </style>
+
+
 </head>
 <body>
     <header class="d-flex p-3  justify-content-between   text-md shadow-sm mb-4">
 
 
         <div class="d-flex ">
-            <p class="  m-auto mx-auto "> Bienvenido, <text style="font-weight:600; font-size:18px">@Session["personName"].ToString()</text>. Tu rol es: <text style="font-weight:600; font-size:18px">@Session["rol"].ToString()</text>, y eres: <text style="font-weight:600; font-size:18px">@Session["userType"].ToString()</text></p>
+            <a href="~/Home/Index"> Volver</a>
 
         </div>
 
@@ -47,49 +46,49 @@
         </div>
     </header>
     <div class="mb-3 border-bottom">
-        <h3>Dashboard</h3>
+        <h3>Detalles</h3>
     </div>
 
-    <div class="mx-3 mb-2 form-group">
-        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-        {
-            @Html.RadioButton("searchByInt", "MobileLine")<text> Línea</text>
-            @Html.RadioButton("searchBy", "Description")<text> Descripción</text> <br />
-            @Html.TextBox("search") <input type="submit" value="search" /> <input type="reset" value="Clear" />
-        }
-    </div>
+     
 
     <div class="row ">
         <table class="table" id="table_id">
             <tr class="text-center">
-                <th>#</th>
-                <th>Línea telefónica</th>
+
+                <th>Celular</th>
                 <th>Descripción</th>
+                <th>Número marcado</th>
+                <th>Fecha</th>
+                <th>Duración de llamada</th>
+                <th>Costo</th>
             </tr>
 
             @foreach (var item in Model)
             {
         <tr class="text-center">
-            <td>@item.MobileLineId</td>
             <td>@item.MobileLine</td>
-            <td>@item.Description</td>
-            <td><a class="btn btn-default" href="~/Home/Details/@item.MobileLineId" >Detalles</a></td>
+            <td>@item.CalledPartyDescription</td>
+            <td>@item.CalledPartyNumber</td>
+            <td>@item.DateTime </td>         
+            <td>@item.Duration</td>
+            <td>@item.TotalCost</td>
 
         </tr>
             }
         </table>
     </div>
+
     <div class="paginador">
         @if (ViewBag.Page > 0)
         {
-            <a href="@Url.Action("Index", new { page = ViewBag.Page - 1 })"
+            <a href="@Url.Action("Details", new { page = ViewBag.Page - 1 })"
                class="btn btn-default">
                 &laquo; Prev
             </a>
         }
         @if (ViewBag.Page < ViewBag.MaxPage)
         {
-            <a href="@Url.Action("Index", new { page = ViewBag.Page + 1 })"
+            <a href="@Url.Action("Details", new { page = ViewBag.Page + 1 })"
                class="btn btn-default">
                 Next &raquo;
             </a>

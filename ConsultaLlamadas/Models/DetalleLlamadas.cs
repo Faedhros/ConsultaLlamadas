@@ -11,15 +11,31 @@ namespace ConsultaLlamadas.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class DetalleLlamadas
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DetalleLlamadas()
+        {
+            this.LineaLlamadas1 = new HashSet<LineaLlamadas>();
+        }
+    
         public long CallDetailId { get; set; }
         public long MobileLine { get; set; }
         public string CalledPartyNumber { get; set; }
         public string CalledPartyDescription { get; set; }
+
+        [DisplayFormat(DataFormatString = "dd MM yyyy")]
         public string DateTime { get; set; }
+
+        [DisplayFormat(DataFormatString = "hh:mm:ss")]
         public string Duration { get; set; }
         public long TotalCost { get; set; }
+        public Nullable<int> MobileLineId { get; set; }
+    
+        public virtual LineaLlamadas LineaLlamadas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LineaLlamadas> LineaLlamadas1 { get; set; }
     }
 }

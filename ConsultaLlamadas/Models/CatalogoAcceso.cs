@@ -16,18 +16,28 @@ namespace ConsultaLlamadas.Models
     public partial class CatalogoAcceso
     {
         public int PersonId { get; set; }
+
+        [Display(Name = "Nombre")]
+
         public string PersonName { get; set; }
 
-        [Required(ErrorMessage ="El usuario es requerido")]
+        [Required (ErrorMessage ="El usuario es requerido")]
         [Display(Name ="Usuario")]
         public string UserName { get; set; }
-        [Required (ErrorMessage ="La contraseña es requerida")]
-        [Display(Name ="Contraseña")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        public string UserType { get; set; }
-        public string Rol { get; set; }
 
+        [Required(ErrorMessage = "La contraseña es requerida")]
+        [Display(Name = "Contraseña")]
+        [DataType(DataType.Password)] 
+        public string Password { get; set; }
+      
+
+        [Display(Name = "Tipo de usuario")]
+
+        public string UserType { get; set; }
+
+
+        public string Rol { get; set; }
+        
         public string ErrorMessage { get; set; }
     }
 }

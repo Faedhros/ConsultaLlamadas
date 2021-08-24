@@ -5,9 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3a71db5e58ff446f997bce24e2d0cc85" Name="Diagram1">
-        <EntityTypeShape EntityType="ConsultaLlamadasModel.DetalleLlamadas" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConsultaLlamadasModel.LineaLlamadas" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConsultaLlamadasModel.DetalleLlamadas" Width="2.375" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConsultaLlamadasModel.LineaLlamadas" Width="1.5" PointX="6" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ConsultaLlamadasModel.CatalogoAcceso" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="ConsultaLlamadasModel.FK__DetalleLl__Mobil__4BAC3F29" />
+        <AssociationConnector Association="ConsultaLlamadasModel.FK__LineaLlam__CallD__49C3F6B7" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

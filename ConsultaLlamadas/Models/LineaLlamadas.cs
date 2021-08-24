@@ -14,8 +14,19 @@ namespace ConsultaLlamadas.Models
     
     public partial class LineaLlamadas
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public LineaLlamadas()
+        {
+            this.DetalleLlamadas = new HashSet<DetalleLlamadas>();
+        }
+    
         public int MobileLineId { get; set; }
         public long MobileLine { get; set; }
         public string Description { get; set; }
+        public Nullable<long> CallDetailId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetalleLlamadas> DetalleLlamadas { get; set; }
+        public virtual DetalleLlamadas DetalleLlamadas1 { get; set; }
     }
 }

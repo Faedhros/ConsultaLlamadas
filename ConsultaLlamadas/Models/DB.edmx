@@ -4,9 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ConsultaLlamadasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+    <Schema Namespace="ConsultaLlamadasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CatalogoAcceso">
           <Key>
             <PropertyRef Name="PersonId" />
@@ -29,6 +27,7 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <Property Name="DateTime" Type="varchar" MaxLength="27" Nullable="false" />
           <Property Name="Duration" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="TotalCost" Type="bigint" Nullable="false" />
+          <Property Name="MobileLineId" Type="int" />
         </EntityType>
         <EntityType Name="LineaLlamadas">
           <Key>
@@ -37,27 +36,50 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <Property Name="MobileLineId" Type="int" Nullable="false" />
           <Property Name="MobileLine" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CallDetailId" Type="bigint" />
         </EntityType>
+        <Association Name="FK__DetalleLl__Mobil__4BAC3F29">
+          <End Role="LineaLlamadas" Type="Self.LineaLlamadas" Multiplicity="0..1" />
+          <End Role="DetalleLlamadas" Type="Self.DetalleLlamadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaLlamadas">
+              <PropertyRef Name="MobileLineId" />
+            </Principal>
+            <Dependent Role="DetalleLlamadas">
+              <PropertyRef Name="MobileLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LineaLlam__CallD__49C3F6B7">
+          <End Role="DetalleLlamadas" Type="Self.DetalleLlamadas" Multiplicity="0..1" />
+          <End Role="LineaLlamadas" Type="Self.LineaLlamadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetalleLlamadas">
+              <PropertyRef Name="CallDetailId" />
+            </Principal>
+            <Dependent Role="LineaLlamadas">
+              <PropertyRef Name="CallDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="LoginSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserName" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="ConsultaLlamadasModelStoreContainer">
+          <EntitySet Name="CatalogoAcceso" EntityType="Self.CatalogoAcceso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DetalleLlamadas" EntityType="Self.DetalleLlamadas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LineaLlamadas" EntityType="Self.LineaLlamadas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CatalogoAcceso" EntityType="Self.CatalogoAcceso" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [CatalogoAcceso].[PersonId] AS [PersonId], 
-    [CatalogoAcceso].[PersonName] AS [PersonName], 
-    [CatalogoAcceso].[UserName] AS [UserName], 
-    [CatalogoAcceso].[Password] AS [Password], 
-    [CatalogoAcceso].[UserType] AS [UserType], 
-    [CatalogoAcceso].[Rol] AS [Rol]
-    FROM [dbo].[CatalogoAcceso] AS [CatalogoAcceso]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK__DetalleLl__Mobil__4BAC3F29" Association="Self.FK__DetalleLl__Mobil__4BAC3F29">
+            <End Role="LineaLlamadas" EntitySet="LineaLlamadas" />
+            <End Role="DetalleLlamadas" EntitySet="DetalleLlamadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LineaLlam__CallD__49C3F6B7" Association="Self.FK__LineaLlam__CallD__49C3F6B7">
+            <End Role="DetalleLlamadas" EntitySet="DetalleLlamadas" />
+            <End Role="LineaLlamadas" EntitySet="LineaLlamadas" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ConsultaLlamadasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -72,6 +94,9 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <Property Name="DateTime" Type="String" MaxLength="27" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Duration" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TotalCost" Type="Int64" Nullable="false" />
+          <Property Name="MobileLineId" Type="Int32" />
+          <NavigationProperty Name="LineaLlamadas" Relationship="ConsultaLlamadasModel.FK__DetalleLl__Mobil__4BAC3F29" FromRole="DetalleLlamadas" ToRole="LineaLlamadas" />
+          <NavigationProperty Name="LineaLlamadas1" Relationship="ConsultaLlamadasModel.FK__LineaLlam__CallD__49C3F6B7" FromRole="DetalleLlamadas" ToRole="LineaLlamadas" />
         </EntityType>
         <EntityType Name="LineaLlamadas">
           <Key>
@@ -80,6 +105,9 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <Property Name="MobileLineId" Type="Int32" Nullable="false" />
           <Property Name="MobileLine" Type="Int64" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CallDetailId" Type="Int64" />
+          <NavigationProperty Name="DetalleLlamadas" Relationship="ConsultaLlamadasModel.FK__DetalleLl__Mobil__4BAC3F29" FromRole="LineaLlamadas" ToRole="DetalleLlamadas" />
+          <NavigationProperty Name="DetalleLlamadas1" Relationship="ConsultaLlamadasModel.FK__LineaLlam__CallD__49C3F6B7" FromRole="LineaLlamadas" ToRole="DetalleLlamadas" />
         </EntityType>
         <EntityType Name="CatalogoAcceso">
           <Key>
@@ -100,11 +128,43 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
             <Parameter Name="UserName" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK__DetalleLl__Mobil__4BAC3F29" Association="ConsultaLlamadasModel.FK__DetalleLl__Mobil__4BAC3F29">
+            <End Role="LineaLlamadas" EntitySet="LineaLlamadas" />
+            <End Role="DetalleLlamadas" EntitySet="DetalleLlamadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LineaLlam__CallD__49C3F6B7" Association="ConsultaLlamadasModel.FK__LineaLlam__CallD__49C3F6B7">
+            <End Role="DetalleLlamadas" EntitySet="DetalleLlamadas" />
+            <End Role="LineaLlamadas" EntitySet="LineaLlamadas" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="LoginSP_Result">
           <Property Type="String" Name="Username" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="Password" Nullable="true" MaxLength="64" />
         </ComplexType>
+        <Association Name="FK__DetalleLl__Mobil__4BAC3F29">
+          <End Type="ConsultaLlamadasModel.LineaLlamadas" Role="LineaLlamadas" Multiplicity="0..1" />
+          <End Type="ConsultaLlamadasModel.DetalleLlamadas" Role="DetalleLlamadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LineaLlamadas">
+              <PropertyRef Name="MobileLineId" />
+            </Principal>
+            <Dependent Role="DetalleLlamadas">
+              <PropertyRef Name="MobileLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LineaLlam__CallD__49C3F6B7">
+          <End Type="ConsultaLlamadasModel.DetalleLlamadas" Role="DetalleLlamadas" Multiplicity="0..1" />
+          <End Type="ConsultaLlamadasModel.LineaLlamadas" Role="LineaLlamadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetalleLlamadas">
+              <PropertyRef Name="CallDetailId" />
+            </Principal>
+            <Dependent Role="LineaLlamadas">
+              <PropertyRef Name="CallDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -114,6 +174,7 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <EntitySetMapping Name="DetalleLlamadas">
             <EntityTypeMapping TypeName="ConsultaLlamadasModel.DetalleLlamadas">
               <MappingFragment StoreEntitySet="DetalleLlamadas">
+                <ScalarProperty Name="MobileLineId" ColumnName="MobileLineId" />
                 <ScalarProperty Name="CallDetailId" ColumnName="CallDetailId" />
                 <ScalarProperty Name="MobileLine" ColumnName="MobileLine" />
                 <ScalarProperty Name="CalledPartyNumber" ColumnName="CalledPartyNumber" />
@@ -127,6 +188,7 @@ advertencia 6002: La tabla o vista 'ConsultaLlamadas.dbo.CatalogoAcceso' no tien
           <EntitySetMapping Name="LineaLlamadas">
             <EntityTypeMapping TypeName="ConsultaLlamadasModel.LineaLlamadas">
               <MappingFragment StoreEntitySet="LineaLlamadas">
+                <ScalarProperty Name="CallDetailId" ColumnName="CallDetailId" />
                 <ScalarProperty Name="MobileLineId" ColumnName="MobileLineId" />
                 <ScalarProperty Name="MobileLine" ColumnName="MobileLine" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
